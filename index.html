@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html>
+<title>Aakash's Farmer Market Map</title>
+
+<head>
+<style type="text/css">
+.button {
+    position: absolute;
+    top: 50%;
+}
+
+</style>
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.2.0/dist/leaflet.css"
+integrity="sha512-M2wvCLH6DSRazYeZRIm1JnYyh22purTM+FDB5CsyxtQJYeKq83arPe5wgbNmcFXGqiSH2XR8dT/fJISVA1r/zQ=="
+crossorigin=""/>
+
+</head>
+<body>
+<body style="background-color:black;">
+
+
+<h1 style = "color:white;" align= "center";> Farmers Market in King County </h1>
+<button onclick="saturday()" >Saturday Farmers Market</button>
+<button onclick="sunday()">Sunday Farmers Market</button>
+<button onclick="BothDays()">Both Day's</button>
+<br></br>
+
+<script src="https://unpkg.com/leaflet@1.2.0/dist/leaflet.js"
+integrity="sha512-lInM/apFSqyy1o6s89K4iQUKg6ppXEgsVxT35HbzUupEVRh2Eu9Wdl4tHj7dZO0s1uvplcYGmt3498TtHq+log=="
+crossorigin=""></script>
+
+<script type="text/javascript" src="http://maps.stamen.com/js/tile.stamen.js?v1.3.0"></script>
+
+<div id="map"style="width:1000px; height:600px; margin:auto"></div>
+
+
+<script src="FarmersMPoints.js"></script>
+
+<script>
+
+var map = L.map('map',
+
+{center: [47.456896,-122.207511],
+zoom: 10});
+
+var layer = new L.StamenTileLayer("toner");
+map.addLayer(layer);
+
+var geoJsonLayer = L.geoJSON(myData, {
+  onEachFeature: function (feature, layer) {
+  var link = feature.properties.WEBSITE;
+    layer.bindPopup('<h1>'+feature.properties.NAME+'</h1><p>Website: '+ '<a href = "' + link + '">' + feature.properties.WEBSITE+'</a></p> <p>Address: ' + feature.properties.ADDRESS + '</p><p>City: ' + feature.properties.CITY + '</p><p>Zipcode: ' + feature.properties.ZIPCODE + '');
+  }
+}).addTo(map);
+
+var seattleIcon = "http://d1marr3m5x4iac.cloudfront.net/images/block/I0-001/016/132/205-1.jpeg_/pike-place-market-05.jpeg";
+var RentonIcon = "http://d1marr3m5x4iac.cloudfront.net/images/block/I0-001/028/974/303-3.jpeg_/texas-farmers-market-mueller-03.jpeg";
+var MercerIcon = "http://d1marr3m5x4iac.cloudfront.net/images/block/I0-001/027/874/090-6.jpeg_/broadway-farmers-market-90.jpeg";
+var ShoreIcon = "http://d1marr3m5x4iac.cloudfront.net/images/block/I0-001/039/428/189-9.jpeg_/city-hall-farmers-market-89.jpeg";
+var IssaIcon = "http://d1marr3m5x4iac.cloudfront.net/images/block/I0-001/039/086/540-8.jpeg_/farmers-market-brunch-40.jpeg";
+
+
+
+var myStyle =
+{
+    fillColor: '#white',
+	opacity: 0.5,
+    color: 'green',
+    weight: 30
+};
+
+var myStyleLine =
+{
+    fillColor: 'white',
+	opacity: 0.5,
+    color: 'red',
+    weight: 10
+};
+
+
+var latlngs1 = [[47.61050665682778,-122.34473168849946],[47.61032944737081,-122.3444151878357],[47.61055728799091, -122.34409868717194],[47.61070918118622, -122.34431326389311],[47.61050665682778, -122.34473168849946]];
+var polygon1 = L.polygon(latlngs1).bindPopup("<h1>Pike Place Market</h1> <p><a href='http://www.pikeplacemarket.org/'>Website: http://www.pikeplacemarket.org/ </a></p> <p> Address: Pike Place between Pine & Virgina, Seattle, 98105 </p><img src=" + seattleIcon + "/>"); 
+polygon1.setStyle(myStyle).addTo(map);
+
+var latlngs2 = [[47.54961617804394,-122.04880356788635],[47.547892686043184,-122.04916834831238],[47.547892686043184, -122.0485246181488],[47.54887754555475, -122.04773068428038],[47.54952928064435, -122.0480954647064],[47.54961617804394, -122.04880356788635]];
+var polygon2 = L.polygon(latlngs2, {color: 'red'}).bindPopup("<h1>Issaquah Farmers Market</h1> <p><a href='http://www.ci.issaquah.wa.us/page.asp?navid=2394'> Website: http://www.ci.issaquah.wa.us/page.asp?navid=2394</a> </p>  <p> Address: 1730 10th Ave NW, Issaquah, WA 98027 </p><img src=" + IssaIcon + "/>"); 
+polygon2.setStyle(myStyle).addTo(map);
+
+var latlngs3 = [[47.7421660697976,-122.35027313232422],[47.741899121549054,-122.34823465347291],[47.74236086900695, -122.34759092330934],[47.743067911864614, -122.3491358757019],[47.7421660697976, -122.35027313232422]];
+var polygon3 = L.polygon(latlngs3, {color: 'red'}).bindPopup("<h1>Shoreline Farmer's Market</h1> <p><a href='http://www.shorelinefarmersmarket.org/'> Website: http://www.shorelinefarmersmarket.org/</p> </a> <p> Address: 15300 Westminster Way N, Shoreline, WA 98133 </P> <img src=" + ShoreIcon + "/>"); 
+polygon3.setStyle(myStyle).addTo(map);
+
+var latlngs4 = [[47.580567827212114,-122.23353266716002],[47.58060401303161,-122.23331272602081],[47.58129153885032, -122.23337709903718],[47.58130239444873, -122.23355412483215],[47.580567827212114, -122.23353266716002]];
+var polygon4 = L.polygon(latlngs4, {color: 'red'}).bindPopup("<h1>Mercer Island Farmers Market</h1> <p><a href='http://www.mifarmersmarket.org '> Website: www.mifarmersmarket.org </p></a>  <p> Address: 7700 SE 32nd St, Mercer Island, WA 98040 </P> <img src=" + MercerIcon + "/>"); 
+polygon4.setStyle(myStyle).addTo(map);
+
+var latlngs5 = [[47.48115073082914,-122.20811069011687],[47.47983105073208,-122.20805168151855],[47.47981292302742, -122.20776200294495],[47.481136229030206, -122.207772731781],[47.48115073082914,-122.20811069011687]];
+var polygon5 = L.polygon(latlngs5, {color: 'red'}).bindPopup("<h1>Renton Farmers Market</h1> <p><p><a href='http://www.rentonfarmersmarket.com'> Website: www.rentonfarmersmarket.com </p></a>  <p> Address: 233 Burnett Ave S, Renton, WA 98057 </P> <img src=" + RentonIcon + "/>"); 
+polygon5.setStyle(myStyle).addTo(map);
+
+
+var saturdayData =  L.geoJson(myData,{
+		filter: function(feature,layer) {
+				if(feature.properties.DAYOFWEEK === "Saturdays") {
+					return true;
+				} else {
+				return false;
+				}
+			}
+		});
+		
+var sundayData =  L.geoJson(myData,{
+		filter: function(feature,layer) {
+				if(feature.properties.DAYOFWEEK === "Sundays") {
+					return true;
+				} else {
+				return false;
+				}
+			}
+		});
+
+var saturdayLineData =  L.geoJson(geojsonLineLayer,{
+		filter: function() {
+				if(feature.properties.Day === "Saturday") {
+					return true;
+				} else {
+				return false;
+				}
+			}
+		});
+		
+var sundayLineData =  L.geoJson(geojsonLineLayer,{
+		filter: function() {
+				if(feature.properties.Day === "Sunday") {
+					return true;
+				} else {
+				return false;
+				}
+			}
+		});		
+		
+var geojsonLineLayer = {
+  "type": "FeatureCollection",
+  "features": [
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "University District Farmers Market",
+        "Website": "http://www.seattlefarmersmarkets.org/",
+        "Address": "1350 NE 50th St",
+		"City": "Seattle",
+		"Zipcode": "98105",
+        "Day": "Saturday"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            -122.31305480003356,
+            47.66491047554342
+          ],
+          [
+            -122.31304407119751,
+            47.66642780836729
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "Des Moines Waterfront Farmers Market",
+        "Website": "http://www.dmfm.org/",
+        "Address": "Dock St and S 227th St",
+		"City": "Seattle",
+		"Zipcode": "98105",
+		"Day": "Saturday"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            -122.32973545789717,
+            47.40278265947828
+          ],
+          [
+            -122.32942968606949,
+            47.40244498898574
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Address": "5300 Ballard Ave NW",
+        "Name": "Ballard Farmers Market",
+        "Website": "http://ballardfarmersmarket.wordpress.com/",       
+		"City": "Seattle",
+		"Zipcode": "98105",
+		"Day": "Sunday"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            -122.38313555717468,
+            47.66652173704477
+          ],
+          [
+            -122.38287270069121,
+            47.66665179185759
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "West Seattle Farmers Market",
+        "Address": "44th Ave SW & SW Alaska St",       
+        "Website": "http://www.seattlefarmersmarkets.org/",
+		"City": "Seattle",
+		"Zipcode": "98105",
+		"Day": "Sunday"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            -122.38709986209868,
+            47.54850460460793
+          ],
+          [
+            -122.38634884357452,
+            47.548497363009865
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "Lake Forest Park Farmers Market",
+        "Address": "17171 Bothell Way NE",
+        "Website": "https://www.localharvest.org/lake-forest-park-commons-farmers-market-M22094",    
+		"City": "Seattle",
+		"Zipcode": "98105",
+		"Day": "Sunday"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            -122.27987051010133,
+            47.75386715852119
+          ],
+          [
+            -122.27792859077452,
+            47.75389601122203
+          ]
+        ]
+      }
+    }
+  ]
+}
+
+	
+
+var LineLayer = L.geoJSON(geojsonLineLayer, {style: styleFunction, onEachFeature: onEachFeature1}).addTo(map);
+
+
+function styleFunction(){ return {color:"red", weight: 10}}
+	
+	function newStyle(){LineLayer.setStyle({color:"purple"});}
+	function oldStyle(){LineLayer.setStyle({color:"red"});}
+	
+
+	function onEachFeature1(feature, layer){
+	var link2 = feature.properties.Website;
+	layer.bindPopup('<h1>'+feature.properties.Name+'</h1><p>Website: '+ '<a href = "' + link2 + '">' + feature.properties.Website+'</a></p> <p>Address: ' + feature.properties.Address + '</p> <p>City: ' + feature.properties.City + '</p> <p>Zipcode: ' + feature.properties.Zipcode + 
+	'</p>', {closeButton: false, offset: L.point(0, -20)});
+	layer.on('mouseover', function(){layer.openPopup();});
+layer.on('mouseover', newStyle);
+layer.on('mouseout', oldStyle);
+layer.on('mouseover', function(){layer.closePopup();});}
+	
+					
+
+function saturday(){
+	map.removeLayer(geoJsonLayer);
+	saturdayData.addTo(map);
+	saturdayLineData.addTo(map);
+	map.removeLayer(sundayData);
+	map.removeLayer(sundayLineData);
+}
+ 
+ 
+function sunday(){
+	map.removeLayer(geoJsonLayer);
+	map.removeLayer(saturdayData);
+	map.removeLayer(saturdayLineData);
+	sundayData.addTo(map);
+	sundayLineData.addTo(map);
+}
+
+function BothDays(){
+	map.removeLayer(saturdayData);
+	map.removeLayer(saturdayLineData);
+	geoJsonLayer.addTo(map);
+	map.removeLayer(sundayData);
+	map.removeLayer(saturdayLineData);
+}
+ 
+
+</script>
+
+<h2 style="color:yellow;">Purpose of Map</h2>
+<p style="color:white;">The purpose behind this map is to show the various locations of Farmers Market that happen around King County. This map is essentially useful to anyone looking to find a good and happening Farmer's Market in King County.
+ It would be most appealing to people looking to buy fresh vegetables and fruits from several different local farmers. This map would be particularly useful to someone who is new in King County, and is in search for Farmers Market around the area. This map covers the best of the best Farmers Market that happen every Saturday and Sunday in King County.</p>
+
+<h2 style="color:yellow;">Cartographic Decisions</h2>
+<p style="color:white;">For this map, I have particularly selected the Toner Basemap from Stamen. This is because it is very visually appealing with the black background of the webpage. Having a black and white high resolution toner map also helps in the colors to stand out, so it's easier for the map reader to understand and point out different locations. The markers in this map are shown with blue symbols and point out the relatively smaller farmers market that happen in King County. The red line's in the map show the farmer's market that are more famous than the blue markers and are highly rated. The green polygons show the best 5 farmer's market that happen around King County. The reason to color code this and add different shapes was so that the user can easily pin point the different types of farmers market and would be intrigued to click on different shapes. For ease, the user can click on any polygon, 
+line or marker and a popup will display showing relevant information
+ about the farmers market. For Example: The hyperlink to the farmer's market website. This is useful for people who want more details about the farmer's market, and can easily obtain this with the website hyperlinked. The popups also show addresses and of the markets for convenience.</p>
+
+<h2 style="color:yellow;">Leaflet Capability Learnt</h2>
+<p style="color:white;">The Leaflet capability that I learnt and applied to this map was the filter function in 2 different methods. You can see the use of this when you try to switch between points of Saturday Farmers Markets and Sunday's. Once clicked on the button above the map, 
+the map will automatically filter out the points
+and show the points corresponding to the day you clicked. For example: When the user clicks on Saturday's Farmers Market, the points filter out and show only Saturday markets, and removes the Sunday points. Same ideology with the Sunday Farmer's Market. To show all the points after filtering, the user has the option to select Both Days, that show all the points on the map.</P>
+
+</body>
+
+</html>
